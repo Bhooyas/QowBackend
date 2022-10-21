@@ -1,0 +1,16 @@
+[Unit]
+Description=My Qow Server
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/ec2-user/QowBackend/backend.py
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=my-backend-server
+User=ec2-user
+WorkingDirectory=/home/ec2-user/QowBackend/
+
+[Install]
+WantedBy=multi-user.target
