@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from tensorflow.keras.applications.mobilenet import preprocess_input
 import tensorflow as tf
 import base64
@@ -8,10 +8,8 @@ from PIL import Image
 import io
 
 app = Flask(__name__)
-api_v1_cors_config = {
-  "origins": ["*"]
-}
-CORS(app, resources={"/*": api_v1_cors_config})
+
+CORS(app)
 
 interpreter = tf.lite.Interpreter(model_path="converted_quant_model.tflite")
 interpreter.allocate_tensors()
@@ -20,6 +18,7 @@ input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
 @app.route("/", methods=["POST"])
+@cross_origin()
 def home():
 	imgstring = request.json["image"].replace("data:image/png;base64,","")
 	img = np.array(Image.open(io.BytesIO(base64.b64decode(imgstring))).convert('RGB'), dtype=np.float32)
