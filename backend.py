@@ -11,7 +11,7 @@ app = Flask(__name__)
 api_v1_cors_config = {
   "origins": ["*"]
 }
-CORS(app, resources={"/api/v1/*": api_v1_cors_config})
+CORS(app, resources={"/*": api_v1_cors_config})
 
 interpreter = tf.lite.Interpreter(model_path="converted_quant_model.tflite")
 interpreter.allocate_tensors()
