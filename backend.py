@@ -6,8 +6,10 @@ import base64
 import numpy as np
 from PIL import Image
 import io
+import requests
 
 app = Flask(__name__)
+url = "https://l6hd298q0g.execute-api.us-east-1.amazonaws.com/Qow/sendmessage"
 
 CORS(app)
 
@@ -32,6 +34,8 @@ def home():
 	else:
 		predicted = "lumpycows"
 		probability = output_data * 100
+		email = request.json["email"]
+		response = requests.post(url, json={"message": "Cow belonging to the person with email:- {} has been tested positive of lumpy virus".format(email)})
 	d = {"predicted": predicted, "probability": probability}
 	return jsonify(d)
 
